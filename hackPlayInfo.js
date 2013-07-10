@@ -5,5 +5,6 @@ window.extStatusHandler = function(o){
 function hackPlayInfo(_o){
   alert(_o);
   var o = eval('('+_o+')');
-  alert(o.artist+a.title);
+  alert(o.artist+o.title);
+  getSongInfoJson(o.title,o.artist);
 }
