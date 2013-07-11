@@ -9,6 +9,6 @@ function hackPlayInfo(_o){
   if(o.type == 'start'){
     var s = o.song;
     alert(s.artist+s.title);
-    getSongInfoJson(o.title,o.artist);
+    getSongInfoJson(s.title,s.artist);
   }
 }
