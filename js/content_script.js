@@ -56,7 +56,7 @@ function readerLyricsAsText(){
 	xhr.onreadystatechange = function() {
 		  if (xhr.readyState == 4) {
 		  	var resp = xhr.responseText;
-		  	alert(resp);
+		  	//alert(resp);
 		  	resp = resp.replace(/\[\d{2}:\d{2}.\d{2}]/g, "<br>");
 		  	$('#lyrDiv').html(resp);
 		  }
@@ -82,6 +82,7 @@ function readerLyricsAsText(){
 }
 function getLyricLink(title,artist){
 	var songJson = getSongInfoJson(title,artist);
+	//alert(songJson);
 	var _json = JSON.parse(songJson);
 	return _json[0].fileslist[0].lrcLink;
 
