@@ -13,7 +13,7 @@ function hackPlayInfo(_o){
   }
 }
 function getSongInfoJson(title,artist){
-	alert(123);
+	alert("getSongInfoJson");
 	var songId = getSongId(title,artist);
 	alert(songId);
 	var xhr = new XMLHttpRequest();
@@ -22,7 +22,7 @@ function getSongInfoJson(title,artist){
 	xhr.open("GET", url, true);
 	xhr.onreadystatechange = function() {
 		  if (xhr.readyState == 4) {
-		  	//alert(xhr.responseText);
+		  	alert(xhr.responseText);
 			var resp = JSON.parse(xhr.responseText);
 			//alert(resp[0].fileslist[0].lrcLink);
 			window.open(resp[0].fileslist[0].lrcLink);
@@ -31,10 +31,11 @@ function getSongInfoJson(title,artist){
 		xhr.send();
 }
 function getSongId(title,artist){
+	alert("getSongId");
 	var songId;
 	var xhr = new XMLHttpRequest();
 	var url = encodeURI("http://qianqianmini.baidu.com/app/search/searchList.php?qword="+title+" "+artist);
-	//alert(url);
+	alert(url);
 	//xhr.open("GET", "http://qianqianmini.baidu.com/app/search/searchList.php?qword=%E8%90%BD%E8%8A%B1%E6%B5%81%E6%B0%B4%20%E9%99%88%E5%A5%95%E8%BF%85", false);
 	xhr.open("GET",url,false);
 	xhr.onreadystatechange = function() {
