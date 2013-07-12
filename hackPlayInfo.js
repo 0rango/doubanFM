@@ -1,5 +1,5 @@
 $('body').ready(function(){
-	if(typeof($('#songTitle') == 'undefined'){
+	if(typeof($('#songTitle')) == 'undefined'){
 		$('body').append("<input type=\"text\" id=\"songTitle\" \/>");
 		$('body').append("<input type=\"text\" id=\"songArtist\" \/>");
 	}
