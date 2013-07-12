@@ -1,0 +1,22 @@
+﻿{
+"name": "douban Lyric",
+"manifest_version": 2,
+"version": "2.0.0",
+"description": "显示豆瓣FM播放当前歌曲的歌词",
+"page_action": {
+	"default_icon": "image/icon.png",
+	"popup": "popup.html"
+},
+"permissions": ["tabs","http://lrccnc.ttplayer.com/*","http://qianqianmini.baidu.com/*","http://music.baidu.com/*"],
+"background": {
+	"page": "background.html"
+},
+"content_scripts": [
+	{
+		"matches": ["http://*.douban.fm/*","http://music.douban.com/*"],
+		"css":["css/ui-lightness/jquery-ui-1.9.2.custom.css"],
+		"js":["js/jquery-1.8.2.js","js/jquery-ui-1.9.2.custom.js","js/content_script.js","js/query_lyric.js"],
+		"run_at": "document_start"
+	}
+	]
+}
