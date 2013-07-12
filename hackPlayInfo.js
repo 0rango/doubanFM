@@ -41,7 +41,7 @@ function getSongId(title,artist){
 	xhr.onreadystatechange = function() {
 		  if (xhr.readyState == 4) {
 			//var resp = JSON.parse(xhr.responseText);
-			//alert(xhr.responseText);
+			alert(xhr.responseText);
 			/*var iframe = document.createElement('iframe');
 			iframe.id = "songInfoIframe";
 			iframe.name = "songInfoIframe";
