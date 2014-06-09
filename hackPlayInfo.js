@@ -12,7 +12,7 @@ function hackPlayInfo(_o){
   
   if(o.type == 'start'){
     var s = o.song;
-    //alert(s.artist+s.title);
+    alert(s.artist+s.title);
     $('#songTitle').val(s.title);
     $('#songArtist').val(s.artist);
     //getSongInfoJson(s.title,s.artist);
