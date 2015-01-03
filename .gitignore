@@ -6,7 +6,7 @@ bin-release/
 # Other files and folders
 .settings/
 
-# .bak files
+# .bak file
 *.bak
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
