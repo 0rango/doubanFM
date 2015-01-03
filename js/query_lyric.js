@@ -1,120 +1,38 @@
-function getLyrics(titleJson){
-	var lyricStr ;
-
-	/*var xhr = new XMLHttpRequest();
-		xhr.open("GET",);*/
-}
-
-function getLyricTitleId(){
-	var jsonStr = "{";
-	var xhr = new XMLHttpRequest();
-		//xhr.open("GET", "http://lrccnc.ttplayer.com/dll/lyricsvr.dll?sh?Artist=48965559C58F&Title=5553668F&Flags=0", true);
-		xhr.open("GET", "http://lrccnc.ttplayer.com/dll/lyricsvr.dll?sh?Artist=48965559C58F&Title=3D84B182416D346C&Flags=0", true);
-		xhr.onreadystatechange = function() {
-		  if (xhr.readyState == 4) {
-			//var resp = JSON.parse(xhr.responseText);
-			alert(xhr.responseText);
-			var songIdDom = parseXml(xhr.responseText);
-
-			var elementList = songIdDom.getElementsByTagName("lrc");
-
-			for(var i=0;i<elementList.length;i++){
-				var id ;
-				var artist;
-				var title; 
-				id = elementList[i].getAttribute("id");
-				artist = elementList[i].getAttribute("artist");
-				title = elementList[i].getAttribute("title");
-
-				if(jsonStr != ""){
-					jsonStr = ",";
-				}
-					//拼接歌曲信息成json数据格式，歌曲id、歌手artist、歌曲名title
-					jsonStr += '["id":id,"artist":artist,"title":title]';
-				//alert(value);
-			}
-		  }
-		}
-
-		jsonStr += "}"
-		xhr.send();
-		return jsonStr;
-};
-function parseXml(xmlDoc){
-	var xmlDom ;
-	if(window.ActiveXObject){//ie环境
-		//针对不同IE版本进行XMLDom对象创建
-		var ARR_ACTIVEX = ["MSXML4.DOMDocument","MSXML3.DOMDocument","MSXML2.DOMDocument","MSXML.DOMDocument"];
-		
-		//标志xmlDom对象是否创建成功
-		var XmlDomflag = false;
-		for(var i= 0; i< ARR_ACTIVEX.length && !XMLDomflag;i++){
-			try{
-				var objXml = new ActiveXObject(ARR_ACTIVEX[i]);
-
-				xmlDom = objXml;
-				XmlDomflag= true;
-			}catch(e){}
-		}
-
-		if(xmlDom){
-			xmlDom.async = false;
-			xmlDom.loadXML(xmlDoc);
-		}else{
-			return;
-		}
-	}else if(document.implementation && document.implementation.createDocument){
-		var domParser = new DOMParser();
-		xmlDom = domParser.parseFromString(xmlDoc,"text/xml");
-	}else{
-		return;
-	}
-
-	return xmlDom;
-}
-function getSongInfoJson(title,artist){
-	//alert("getSongInfoJson");
+function getSongInfoJson(title,artist,callWait){
+	var songInfoJson = {"lrcLink":"","songLink":""} ;
 	var songId = getSongId(title,artist);
-	//alert(songId);
 	var resp = '';
 	var xhr = new XMLHttpRequest();
-	var url = encodeURI("http://qianqianmini.baidu.com/app/link/getLinks.php?songId="+songId+"&songArtist="+artist+"&songTitle="+title+"&linkType=0&isLogin=0&clientVer=7.0.2");
-	//alert(url);
+	var url = encodeURI("http://music.baidu.com/song/"+songId);
 	xhr.open("GET", url, false);
 	xhr.onreadystatechange = function() {
 		  if (xhr.readyState == 4) {
-		  	//alert(xhr.responseText);
 		  	resp = xhr.responseText;
-			//var resp = JSON.parse(xhr.responseText);
-			//alert(resp[0].fileslist[0].lrcLink);
-			//window.open(resp[0].fileslist[0].lrcLink);
+			var _lyricAHtml = resp.match("<a.*class=.*down-lrc-btn.*data-lyricdata=.*>.*</a>");
+			if(typeof(_lyricAHtml) != 'undefined' && _lyricAHtml != null){
+				var _lyricHref = _lyricAHtml.toString().match(":\".*\.lrc\"");
+				songInfoJson.lrcLink = "http://music.baidu.com" + _lyricHref.toString().substring(2,_lyricHref.toString().length-1);
+			}
+			
+		  }else {
+		  	if(typeof(callWait) == 'function'){
+				callWait();
+			}
 		  }
 		}
 		xhr.send();
 
-	return resp;
+	return songInfoJson;
 }
-function getSongId(title,artist){
+function getSongId(title,artist,callWait){
 	//alert("getSongId");
 	var songId;
 	var xhr = new XMLHttpRequest();
 	var url = encodeURI("http://qianqianmini.baidu.com/app/search/searchList.php?qword="+title+" "+artist);
-	//alert(url);
 	//xhr.open("GET", "http://qianqianmini.baidu.com/app/search/searchList.php?qword=%E8%90%BD%E8%8A%B1%E6%B5%81%E6%B0%B4%20%E9%99%88%E5%A5%95%E8%BF%85", false);
 	xhr.open("GET",url,false);
 	xhr.onreadystatechange = function() {
 		  if (xhr.readyState == 4) {
-			//var resp = JSON.parse(xhr.responseText);
-			//alert(xhr.responseText);
-			/*var iframe = document.createElement('iframe');
-			iframe.id = "songInfoIframe";
-			iframe.name = "songInfoIframe";
-			document.body.appendChild(iframe);
-			var iframeDOM = window.frames["songInfoIframe"].document;
-			iframeDOM.body.innerHTML = xhr.responseText;
-			$(iframeDOM).find(":checkbox.sCheckBox").each(function(item,value){
-				iframeDOM.body.innerHTML($(value).attr("id"));
-			});*/
 			var resp = xhr.responseText;
 			//alert(resp.match("<input id=\"\\d{2,10}\" type=\'checkbox\'  class=\'sCheckBox\' \/>"));
 			var divElem = document.createElement('div');
@@ -124,10 +42,17 @@ function getSongId(title,artist){
 			$("#searchList").find(":checkbox.sCheckBox").each(function(item,value){
 				songId = $(value).attr("id");
 			});
-		  }
+		  }else{
+			if(typeof(callWait) == 'function'){
+				callWait();
+			}
 		}
-		xhr.send();
+	}
+	xhr.send();
 
-	//alert(songId);
 	return songId;
+}
+function getLyricLink(title,artist,callWait){
+	var songJson = getSongInfoJson(title,artist,callWait);
+	return songJson.lrcLink;
 }
