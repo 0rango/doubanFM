@@ -11,6 +11,6 @@ function hackPlayInfo(_o) {
     //alert(s.artist+s.title);
     $('#songTitle').val(s.title);
     $('#songArtist').val(s.artist);
-    getSongInfoJson(s.title, s.artist);
+    $('#songTitle').click();
   }
 }
