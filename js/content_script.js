@@ -78,7 +78,7 @@ function initResource() {
 	$("#dialog").on("mousewheel", function(event) {
 		event.stopPropagation();
 	});
-	$("#dialog").delegate("input[id='songTitle']","change", function() {
+	$("#dialog").delegate("input[id='songTitle']","click", function() {
 		readerLyricsAsText();
 	});
 	$(".banner-ad-slot").on("DOMNodeInserted", function() {
